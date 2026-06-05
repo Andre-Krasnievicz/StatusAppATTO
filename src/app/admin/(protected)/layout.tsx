@@ -5,6 +5,7 @@ import { LogoutButton } from "@/components/admin/LogoutButton";
 const navLinks = [
   { href: "/admin/dashboard", label: "Dashboard" },
   { href: "/admin/events", label: "Histórico" },
+  { href: "/", label: "Status geral" },
 ];
 
 export default async function AdminLayout({
