@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -78,7 +79,6 @@ export default function LoginPage() {
                   className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-700"
                 />
               </div>
-
               <button
                 type="submit"
                 disabled={loading}
@@ -86,6 +86,12 @@ export default function LoginPage() {
               >
                 {loading ? "Entrando..." : "Entrar"}
               </button>
+              <Link
+                href={"/"}
+                className="text-xs text-green-600 hover:text-green-800 hover:underline"
+              >
+                Ir para status geral
+              </Link>
             </form>
           </div>
         </div>
