@@ -22,7 +22,7 @@ export default async function StatusPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl font-semibold text-white">
-                ATTO - Status dos Instrumentos
+                Campina - Status dos Instrumentos
               </h1>
               <p className="text-sm text-green-300">
                 Amazon Tall Tower Observatory

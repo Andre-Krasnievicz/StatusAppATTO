@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ATTO - Status dos Instrumentos",
+  title: "Campina - Status dos Instrumentos",
   description:
     "Status operacional dos instrumentos do Amazon Tall Tower Observatory",
 };
