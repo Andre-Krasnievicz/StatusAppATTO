@@ -7,6 +7,8 @@ export default function NewInstrumentPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("ONLINE");
+  const [reason, setReason] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,6 +21,7 @@ export default function NewInstrumentPage() {
       group: form.get("group"),
       location: form.get("location"),
       currentStatus: form.get("currentStatus"),
+      reason: reason.trim() || undefined,
       isActive: true,
     };
 
@@ -50,7 +53,9 @@ export default function NewInstrumentPage() {
         {error && <p className="text-sm text-red-600">{error}</p>}
 
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700">Nome</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Nome
+          </label>
           <input
             name="name"
             required
@@ -60,7 +65,9 @@ export default function NewInstrumentPage() {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700">Grupo</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Grupo
+          </label>
           <input
             name="group"
             required
@@ -87,7 +94,8 @@ export default function NewInstrumentPage() {
           </label>
           <select
             name="currentStatus"
-            defaultValue="ONLINE"
+            value={currentStatus}
+            onChange={(e) => setCurrentStatus(e.target.value)}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="ONLINE">Online</option>
@@ -96,7 +104,22 @@ export default function NewInstrumentPage() {
             <option value="MAINTENANCE">Manutenção</option>
           </select>
         </div>
-
+        {currentStatus !== "ONLINE" && (
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Motivo
+            </label>
+            <textarea
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              maxLength={500}
+              rows={3}
+              required
+              placeholder="Descreva o motivo"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+        )}
         <div className="flex justify-end gap-3 pt-2">
           <button
             type="button"

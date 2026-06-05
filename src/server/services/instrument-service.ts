@@ -7,7 +7,7 @@ import {
   updateInstrumentData,
 } from "@/server/repositories/instrument-repository";
 import { findRecentEventsByInstrumentId } from "@/server/repositories/status-event-repository";
-
+import { prisma } from "@/lib/prisma";
 // ── Public ────────────────────────────────────────────────────────────────────
 
 export async function getPublicInstruments() {
@@ -50,16 +50,52 @@ export async function createInstrumentAdmin(
     group: string;
     location: string;
     currentStatus?: "ONLINE" | "OFFLINE" | "UNSTABLE" | "MAINTENANCE";
+    reason?: string;
     isActive?: boolean;
   },
-  userId: string
+  userId: string,
 ) {
-  return createInstrument({ ...data, lastUpdatedByUserId: userId });
+  if (data.currentStatus === "ONLINE") {
+    return createInstrument({ ...data, lastUpdatedByUserId: userId });
+  }
+  return prisma.$transaction(async (tx) => {
+    const instrument = await tx.instrument.create({
+      data: {
+        name: data.name,
+        group: data.group,
+        location: data.location,
+        currentStatus: data.currentStatus ?? "ONLINE",
+        isActive: data.isActive ?? true,
+        lastUpdatedByUserId: userId,
+      },
+    });
+
+    const now = new Date();
+    if (data.currentStatus !== "ONLINE") {
+      await tx.statusEvent.create({
+        data: {
+          instrumentId: instrument.id,
+          previousStatus: "ONLINE",
+          newStatus: instrument.currentStatus,
+          reason: data.reason?.trim() || null,
+          startedAt: now,
+          createdById: userId,
+        },
+      });
+    }
+
+    return instrument;
+  });
 }
 
 export async function updateInstrumentAdmin(
   id: string,
-  data: { name?: string; group?: string; location?: string; isActive?: boolean }
+  data: {
+    name?: string;
+    group?: string;
+    location?: string;
+    isActive?: boolean;
+  },
 ) {
   const instrument = await findInstrumentByIdAdmin(id);
   if (!instrument) throw new Error("Instrumento não encontrado");

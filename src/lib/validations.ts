@@ -7,13 +7,27 @@ export const InstrumentStatusEnum = z.enum([
   "MAINTENANCE",
 ]);
 
-export const createInstrumentSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório").max(100),
-  group: z.string().min(1, "Grupo é obrigatório").max(100),
-  location: z.string().min(1, "Localização é obrigatória").max(100),
-  currentStatus: InstrumentStatusEnum.default("ONLINE"),
-  isActive: z.boolean().default(true),
-});
+export const createInstrumentSchema = z
+  .object({
+    name: z.string().min(1, "Nome é obrigatório").max(100),
+    group: z.string().min(1, "Grupo é obrigatório").max(100),
+    location: z.string().min(1, "Localização é obrigatória").max(100),
+    currentStatus: InstrumentStatusEnum.default("ONLINE"),
+    reason: z.string().trim().max(500).optional(),
+    isActive: z.boolean().default(true),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      data.currentStatus !== "ONLINE" &&
+      (!data.reason || data.reason?.trim().length === 0)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Motivo é obrigatório quando o status não for online.",
+        path: ["reason"],
+      });
+    }
+  });
 
 export const updateInstrumentSchema = z.object({
   name: z.string().min(1).max(100).optional(),
@@ -21,7 +35,6 @@ export const updateInstrumentSchema = z.object({
   location: z.string().min(1).max(100).optional(),
   isActive: z.boolean().optional(),
 });
-
 export const statusUpdateSchema = z
   .object({
     newStatus: InstrumentStatusEnum,
