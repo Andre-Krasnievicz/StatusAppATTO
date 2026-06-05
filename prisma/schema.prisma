@@ -1,0 +1,120 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum InstrumentStatus {
+  ONLINE
+  OFFLINE
+  UNSTABLE
+  MAINTENANCE
+}
+
+// Tabelas gerenciadas pelo BetterAuth
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+
+  instruments  Instrument[]
+  statusEvents StatusEvent[]
+  sessions     Session[]
+  accounts     Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+// Entidades do domínio
+model Instrument {
+  id                  String           @id @default(cuid())
+  name                String
+  group               String
+  location            String
+  currentStatus       InstrumentStatus @default(ONLINE)
+  isActive            Boolean          @default(true)
+  lastStatusUpdatedAt DateTime         @default(now())
+  lastUpdatedByUserId String?
+  lastUpdatedBy       User?            @relation(fields: [lastUpdatedByUserId], references: [id], onDelete: SetNull)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  statusEvents StatusEvent[]
+
+  @@index([isActive])
+  @@index([currentStatus])
+  @@index([group])
+  @@map("instrument")
+}
+
+model StatusEvent {
+  id             String           @id @default(cuid())
+  instrumentId   String
+  instrument     Instrument       @relation(fields: [instrumentId], references: [id], onDelete: Cascade)
+  previousStatus InstrumentStatus
+  newStatus      InstrumentStatus
+  reason         String?
+  startedAt      DateTime         @default(now())
+  endedAt        DateTime?
+  createdById    String?
+  createdBy      User?            @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([instrumentId])
+  @@index([instrumentId, endedAt])
+  @@index([startedAt])
+  @@map("status_event")
+}
