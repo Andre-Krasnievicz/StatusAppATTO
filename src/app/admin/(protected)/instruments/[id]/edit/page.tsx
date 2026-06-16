@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getAdminInstrumentById } from "@/server/services/instrument-service";
-import { EditInstrumentForm } from "@/components/admin/EditInstrumentForm";
+import { EditInstrumentForm } from "@/components/admin/instruments/EditInstrumentForm";
 
 export default async function EditInstrumentPage({
   params,

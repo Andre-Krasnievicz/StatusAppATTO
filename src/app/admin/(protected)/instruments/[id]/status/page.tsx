@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getAdminInstrumentById } from "@/server/services/instrument-service";
-import { UpdateStatusForm } from "@/components/admin/UpdateStatusForm";
+import { UpdateStatusForm } from "@/components/admin/instruments/UpdateStatusForm";
 
 export default async function UpdateStatusPage({
   params,

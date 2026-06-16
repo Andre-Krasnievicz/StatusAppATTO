@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getSession } from "@/lib/session";
-import { LogoutButton } from "@/components/admin/LogoutButton";
+import { LogoutButton } from "@/components/admin/instruments/LogoutButton";
 
 const navLinks = [
   { href: "/admin/dashboard", label: "Dashboard" },
   { href: "/admin/events", label: "Histórico" },
   { href: "/", label: "Status geral" },
+  { href: "/admin/user", label: "Usuários" },
 ];
 
 export default async function AdminLayout({
@@ -24,7 +25,7 @@ export default async function AdminLayout({
               href="/admin/dashboard"
               className="font-semibold text-white hover:text-green-100"
             >
-              ATTO admin
+              Campina admin
             </Link>
             <div className="flex gap-4">
               {navLinks.map(({ href, label }) => (
