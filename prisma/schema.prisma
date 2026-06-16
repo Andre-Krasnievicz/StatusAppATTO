@@ -17,13 +17,17 @@ enum InstrumentStatus {
 
 // Tabelas gerenciadas pelo BetterAuth
 model User {
-  id            String   @id
+  id            String    @id
   name          String
-  email         String   @unique
+  email         String    @unique
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+  role          String?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
 
   instruments  Instrument[]
   statusEvents StatusEvent[]
