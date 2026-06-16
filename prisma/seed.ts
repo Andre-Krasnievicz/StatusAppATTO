@@ -95,11 +95,12 @@ async function main() {
     where: { email: "admin@status.local" },
   });
   if (!existingUser) {
-    await auth.api.signUpEmail({
+    await auth.api.createUser({
       body: {
         email: "admin@status.local",
         password: "admin123",
         name: "Administrador",
+        role: "admin",
       },
     });
   }
