@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type Instrument = {
   id: string;
@@ -13,12 +14,11 @@ type Instrument = {
 
 export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
   const router = useRouter();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError("");
+
     setLoading(true);
 
     const form = new FormData(e.currentTarget);
@@ -37,7 +37,7 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Erro ao salvar instrumento.");
+      toast.error(data.error ?? "Erro ao salvar instrumento.");
       setLoading(false);
       return;
     }
@@ -51,8 +51,6 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
       onSubmit={handleSubmit}
       className="space-y-4 rounded-lg border border-green-100 bg-white p-6 shadow-sm"
     >
-      {error && <p className="text-sm text-red-600">{error}</p>}
-
       <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700">Nome</label>
         <input

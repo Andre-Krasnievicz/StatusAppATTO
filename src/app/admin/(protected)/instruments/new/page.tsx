@@ -2,17 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function NewInstrumentPage() {
   const router = useRouter();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentStatus, setCurrentStatus] = useState("ONLINE");
   const [reason, setReason] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     const form = new FormData(e.currentTarget);
@@ -33,11 +32,11 @@ export default function NewInstrumentPage() {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Erro ao criar instrumento.");
+      toast.error(data.error ?? "Erro ao criar instrumento.");
       setLoading(false);
       return;
     }
-
+    toast.success("Instrumento criado com sucesso!");
     router.push("/admin/dashboard");
     router.refresh();
   }
@@ -50,8 +49,6 @@ export default function NewInstrumentPage() {
         onSubmit={handleSubmit}
         className="space-y-4 rounded-lg border border-green-100 bg-white p-6 shadow-sm"
       >
-        {error && <p className="text-sm text-red-600">{error}</p>}
-
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700">
             Nome

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type InstrumentStatus = "ONLINE" | "OFFLINE" | "UNSTABLE" | "MAINTENANCE";
 
@@ -22,7 +23,6 @@ export function UpdateStatusForm({
   const router = useRouter();
   const [newStatus, setNewStatus] = useState<InstrumentStatus>(currentStatus);
   const [reason, setReason] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const reasonRequired = newStatus !== "ONLINE";
@@ -30,10 +30,9 @@ export function UpdateStatusForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError("");
 
     if (reasonRequired && !reason.trim()) {
-      setError("Motivo é obrigatório quando o status não for Online.");
+      toast.error("Motivo é obrigatório quando o status não for Online.");
       return;
     }
 
@@ -47,11 +46,11 @@ export function UpdateStatusForm({
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Erro ao atualizar status.");
+      toast.error(data.error ?? "Erro ao atualizar status.");
       setLoading(false);
       return;
     }
-
+    toast.success("Status atualizado com sucesso!");
     router.push("/admin/dashboard");
     router.refresh();
   }
@@ -61,8 +60,6 @@ export function UpdateStatusForm({
       onSubmit={handleSubmit}
       className="space-y-4 rounded-lg border border-green-100 bg-white p-6 shadow-sm"
     >
-      {error && <p className="text-sm text-red-600">{error}</p>}
-
       <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700">
           Novo status

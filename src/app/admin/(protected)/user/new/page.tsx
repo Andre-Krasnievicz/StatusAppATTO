@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { toast } from "sonner";
 
 export default function NewUserPage() {
   const router = useRouter();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,7 +17,6 @@ export default function NewUserPage() {
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     const form = new FormData(e.currentTarget);
@@ -31,9 +30,10 @@ export default function NewUserPage() {
     setLoading(false);
 
     if (error) {
-      setError(error.message ?? "Erro ao criar usuário");
+      toast.error(error.message ?? "Erro ao criar usuário");
       return;
     }
+    toast.success("Usuário criado com sucesso!");
     router.push("/admin/user");
     router.refresh();
   }
@@ -45,7 +45,6 @@ export default function NewUserPage() {
         onSubmit={handleSubmit}
         className="space-y-4 rounded-lg border border-green-100 bg-white p-6 shadow-sm"
       >
-        {error && <p className="text-sm text-red-600">{error}</p>}
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700">
             Nome
