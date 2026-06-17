@@ -5,6 +5,8 @@ import Link from "next/link";
 import { InstrumentStatus } from "@prisma/client";
 import { StatusBadge } from "./StatusBadge";
 import { timeAgo, formatDateTime } from "@/lib/dates";
+import { HiPencil } from "react-icons/hi2";
+import { MdSignalWifiStatusbarNotConnected } from "react-icons/md";
 
 type Instrument = {
   id: string;
@@ -26,8 +28,10 @@ const STATUS_LABELS: Record<string, string> = {
 
 export function InstrumentTable({
   instruments,
+  isAdmin,
 }: {
   instruments: Instrument[];
+  isAdmin: boolean;
 }) {
   const [filterStatus, setFilterStatus] = useState("");
   const [filterGroup, setFilterGroup] = useState("");
@@ -110,12 +114,19 @@ export function InstrumentTable({
               <th className="hidden px-4 py-3 lg:table-cell">
                 Última atualização
               </th>
+              {/*Deve aparecer se usuário tiver logado*/}
+              {isAdmin ? (
+                <th className="hidden px-4 py-3 lg:table-cell">Ações</th>
+              ) : null}
             </tr>
           </thead>
           <tbody className="divide-y divide-green-50">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
+                <td
+                  colSpan={isAdmin ? 6 : 5}
+                  className="px-4 py-8 text-center text-gray-400"
+                >
                   Nenhum instrumento encontrado
                 </td>
               </tr>
@@ -155,6 +166,25 @@ export function InstrumentTable({
                     )}
                   </span>
                 </td>
+                {/*Deve aparecer se usuário tiver logado*/}
+                {isAdmin ? (
+                  <td className="px-4 py-3">
+                    <div className="flex gap-3">
+                      <Link
+                        href={`/admin/instruments/${instrument.id}/status`}
+                        className="flex h-8 w-8 items-center justify-center rounded-md bg-green-100 text-gray-500 transition hover:bg-green-200 hover:text-gray-900"
+                      >
+                        <MdSignalWifiStatusbarNotConnected size={15} />
+                      </Link>
+                      <Link
+                        href={`/admin/instruments/${instrument.id}/edit`}
+                        className="flex h-8 w-8 items-center justify-center rounded-md bg-green-100 text-gray-500 transition hover:bg-green-200 hover:text-gray-900"
+                      >
+                        <HiPencil size={15} />
+                      </Link>
+                    </div>
+                  </td>
+                ) : null}
               </tr>
             ))}
           </tbody>
