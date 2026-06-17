@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getAdminInstruments } from "@/server/services/instrument-service";
 import { StatusBadge } from "@/components/status/StatusBadge";
 import { timeAgo } from "@/lib/dates";
+import { HiPencil } from "react-icons/hi2";
+import { MdSignalWifiStatusbarNotConnected } from "react-icons/md";
 
 export default async function DashboardPage() {
   const instruments = await getAdminInstruments();
@@ -31,7 +33,10 @@ export default async function DashboardPage() {
           </thead>
           <tbody className="divide-y divide-green-50">
             {instruments.map((instrument) => (
-              <tr key={instrument.id} className="hover:bg-green-50/50 transition-colors">
+              <tr
+                key={instrument.id}
+                className="hover:bg-green-50/50 transition-colors"
+              >
                 <td className="px-4 py-3">
                   <div className="font-medium text-gray-900">
                     {instrument.name}
@@ -53,15 +58,15 @@ export default async function DashboardPage() {
                   <div className="flex gap-3">
                     <Link
                       href={`/admin/instruments/${instrument.id}/status`}
-                      className="text-green-700 hover:text-green-900 hover:underline"
+                      className="flex h-8 w-8 items-center justify-center rounded-md bg-green-100 text-gray-500 transition hover:bg-green-200 hover:text-gray-900"
                     >
-                      Status
+                      <MdSignalWifiStatusbarNotConnected size={15} />
                     </Link>
                     <Link
                       href={`/admin/instruments/${instrument.id}/edit`}
-                      className="text-gray-500 hover:text-gray-700 hover:underline"
+                      className="flex h-8 w-8 items-center justify-center rounded-md bg-green-100 text-gray-500 transition hover:bg-green-200 hover:text-gray-900"
                     >
-                      Editar
+                      <HiPencil size={15} />
                     </Link>
                   </div>
                 </td>
