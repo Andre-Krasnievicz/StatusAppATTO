@@ -36,41 +36,41 @@ const STATUS_LABELS: Record<string, string> = {
   MAINTENANCE: "Manutenção",
 };
 
-function GroupSummaryBadges({ summary }: { summary: GroupSummary }) {
-  return (
-    <div className="flex flex-wrap items-center gap-2 text-xs">
-      <span className="text-gray-500">
-        {summary.total} instrumento{summary.total !== 1 ? "s" : ""}
-      </span>
+// function GroupSummaryBadges({ summary }: { summary: GroupSummary }) {
+//   return (
+//     <div className="flex flex-wrap items-center gap-2 text-xs">
+//       <span className="text-gray-500">
+//         {summary.total} instrumento{summary.total !== 1 ? "s" : ""}
+//       </span>
 
-      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-100 px-2 py-0.5 text-emerald-800">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-        {summary.online}
-      </span>
+//       <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-100 px-2 py-0.5 text-emerald-800">
+//         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+//         {summary.online}
+//       </span>
 
-      {summary.offline > 0 && (
-        <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-100 px-2 py-0.5 text-red-800">
-          <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-          {summary.offline}
-        </span>
-      )}
+//       {summary.offline > 0 && (
+//         <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-100 px-2 py-0.5 text-red-800">
+//           <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+//           {summary.offline}
+//         </span>
+//       )}
 
-      {summary.unstable > 0 && (
-        <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-100 px-2 py-0.5 text-amber-800">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-          {summary.unstable}
-        </span>
-      )}
+//       {summary.unstable > 0 && (
+//         <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-100 px-2 py-0.5 text-amber-800">
+//           <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+//           {summary.unstable}
+//         </span>
+//       )}
 
-      {summary.maintenance > 0 && (
-        <span className="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-sky-100 px-2 py-0.5 text-sky-800">
-          <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
-          {summary.maintenance}
-        </span>
-      )}
-    </div>
-  );
-}
+//       {summary.maintenance > 0 && (
+//         <span className="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-sky-100 px-2 py-0.5 text-sky-800">
+//           <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+//           {summary.maintenance}
+//         </span>
+//       )}
+//     </div>
+//   );
+// }
 
 export function InstrumentTable({
   instruments,
@@ -82,18 +82,19 @@ export function InstrumentTable({
   const router = useRouter();
   const [filterStatus, setFilterStatus] = useState("");
   const [filterGroup, setFilterGroup] = useState("");
-  const [filterCategory, setFilterCategory] = useState("");
+  // const [filterCategory, setFilterCategory] = useState("");
   const [filterLocation, setFilterLocation] = useState("");
 
-  const groups = [...new Set(instruments.map((i) => i.group))].sort();
-  const categories = [...new Set(instruments.map((i) => i.category))].sort();
+  // const groups = [...new Set(instruments.map((i) => i.group))].sort();
+  // const categories = [...new Set(instruments.map((i) => i.category))].sort();
   const locations = [...new Set(instruments.map((i) => i.location))].sort();
-  const hasFilter =
-    filterStatus || filterGroup || filterCategory || filterLocation;
+  // const hasFilter =
+  //   filterStatus || filterGroup || filterCategory || filterLocation;
+  const hasFilter = filterStatus || filterGroup || filterLocation;
 
   const filtered = instruments.filter((i) => {
     if (filterStatus && i.currentStatus !== filterStatus) return false;
-    if (filterCategory && i.category !== filterCategory) return false;
+    // if (filterCategory && i.category !== filterCategory) return false;
     if (filterLocation && i.location !== filterLocation) return false;
     return true;
   });
@@ -114,7 +115,7 @@ export function InstrumentTable({
           ))}
         </select>
 
-        <select
+        {/* <select
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
           className="rounded-md border border-green-200 bg-white px-3 py-1.5 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-700"
@@ -125,7 +126,7 @@ export function InstrumentTable({
               {c}
             </option>
           ))}
-        </select>
+        </select> */}
 
         <select
           value={filterLocation}
@@ -144,7 +145,7 @@ export function InstrumentTable({
           <button
             onClick={() => {
               setFilterStatus("");
-              setFilterCategory("");
+              // setFilterCategory("");
               setFilterLocation("");
             }}
             className="rounded-md border border-green-200 bg-white px-3 py-1.5 text-sm text-green-700 hover:bg-green-50"
@@ -169,8 +170,8 @@ export function InstrumentTable({
           <thead>
             <tr className="border-b border-green-100 bg-green-50 text-left text-xs font-medium uppercase tracking-wide text-green-700">
               <th className="px-4 py-3">Instrumento</th>
-              <th className="hidden px-4 py-3 sm:table-cell">Grupo</th>
-              <th className="hidden px-4 py-3 sm:table-cell">Categoria</th>
+              {/* <th className="hidden px-4 py-3 sm:table-cell">Grupo</th>
+              <th className="hidden px-4 py-3 sm:table-cell">Categoria</th> */}
               <th className="hidden px-4 py-3 md:table-cell">Localização</th>
               <th className="px-4 py-3">Status</th>
               <th className="hidden px-4 py-3 lg:table-cell">
@@ -206,12 +207,12 @@ export function InstrumentTable({
                     {instrument.name}
                   </Link>
                 </td>
-                <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
+                {/* <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
                   {instrument.group}
                 </td>
                 <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
                   {instrument.category}
-                </td>
+                </td> */}
                 <td className="hidden px-4 py-3 text-gray-600 md:table-cell">
                   {instrument.location}
                 </td>

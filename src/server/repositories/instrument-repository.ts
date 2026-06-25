@@ -7,7 +7,7 @@ const userSelect = { select: { id: true, name: true } };
 
 export async function findActiveInstruments() {
   return prisma.instrument.findMany({
-    where: { isActive: true },
+    where: { isActive: true, category: { not: "Estação meteorológica" } },
     include: { lastUpdatedBy: userSelect },
     orderBy: { name: "asc" },
   });
