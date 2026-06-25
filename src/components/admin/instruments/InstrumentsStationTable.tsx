@@ -29,8 +29,8 @@ export function InstrumentsStationTable({
         <thead>
           <tr className="border-b border-green-100 bg-green-50 text-left text-xs font-medium uppercase tracking-wide text-green-700">
             <th className="px-4 py-3">Instrumento</th>
-            <th className="hidden px-4 py-3 sm:table-cell">Grupo</th>
-            <th className="hidden px-4 py-3 sm:table-cell">Categoria</th>
+            {/* <th className="hidden px-4 py-3 sm:table-cell">Grupo</th>
+            <th className="hidden px-4 py-3 sm:table-cell">Categoria</th> */}
             <th className="hidden px-4 py-3 md:table-cell">Localização</th>
             <th className="px-4 py-3">Status</th>
             <th className="hidden px-4 py-3 lg:table-cell">
@@ -66,12 +66,12 @@ export function InstrumentsStationTable({
                   {instrument.name}
                 </Link>
               </td>
-              <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
+              {/* <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
                 {instrument.group}
               </td>
               <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
                 {instrument.category}
-              </td>
+              </td> */}
               <td className="hidden px-4 py-3 text-gray-600 md:table-cell">
                 {instrument.location}
               </td>
