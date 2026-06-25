@@ -10,6 +10,7 @@ type Instrument = {
   group: string;
   location: string;
   isActive: boolean;
+  category: string;
 };
 
 export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
@@ -42,7 +43,8 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
       return;
     }
 
-    router.push("/admin/dashboard");
+    toast.success("Instrumento atualizado com sucesso!");
+    router.push("/");
     router.refresh();
   }
 
@@ -58,7 +60,7 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
           required
           maxLength={100}
           defaultValue={instrument.name}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
 
@@ -69,7 +71,20 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
           required
           maxLength={100}
           defaultValue={instrument.group}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="block text-sm font-medium text-gray-700">
+          Categoria
+        </label>
+        <input
+          name="group"
+          required
+          maxLength={100}
+          defaultValue={instrument.category}
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
 
@@ -82,7 +97,7 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
           required
           maxLength={100}
           defaultValue={instrument.location}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
 
@@ -91,7 +106,7 @@ export function EditInstrumentForm({ instrument }: { instrument: Instrument }) {
         <select
           name="isActive"
           defaultValue={instrument.isActive ? "true" : "false"}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
           <option value="true">Sim</option>
           <option value="false">Não</option>

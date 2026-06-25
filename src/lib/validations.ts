@@ -15,6 +15,7 @@ export const createInstrumentSchema = z
     currentStatus: InstrumentStatusEnum.default("ONLINE"),
     reason: z.string().trim().max(500).optional(),
     isActive: z.boolean().default(true),
+    category: z.string().min(1, "Category é obrigatório").max(100),
   })
   .superRefine((data, ctx) => {
     if (
@@ -34,6 +35,7 @@ export const updateInstrumentSchema = z.object({
   group: z.string().min(1).max(100).optional(),
   location: z.string().min(1).max(100).optional(),
   isActive: z.boolean().optional(),
+  category: z.string().min(1).max(100).optional(),
 });
 export const statusUpdateSchema = z
   .object({

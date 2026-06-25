@@ -94,12 +94,14 @@ model Instrument {
   lastUpdatedBy       User?            @relation(fields: [lastUpdatedByUserId], references: [id], onDelete: SetNull)
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
+  category            String
 
   statusEvents StatusEvent[]
 
   @@index([isActive])
   @@index([currentStatus])
   @@index([group])
+  @@index([category])
   @@map("instrument")
 }
 
