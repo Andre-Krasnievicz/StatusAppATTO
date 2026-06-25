@@ -43,6 +43,7 @@ export async function createInstrument(data: {
   currentStatus?: InstrumentStatus;
   isActive?: boolean;
   lastUpdatedByUserId?: string;
+  category: string;
 }) {
   return prisma.instrument.create({ data });
 }
@@ -54,7 +55,8 @@ export async function updateInstrumentData(
     group?: string;
     location?: string;
     isActive?: boolean;
-  }
+    category?: string;
+  },
 ) {
   return prisma.instrument.update({ where: { id }, data });
 }

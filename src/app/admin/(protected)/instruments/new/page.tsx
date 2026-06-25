@@ -22,6 +22,7 @@ export default function NewInstrumentPage() {
       currentStatus: form.get("currentStatus"),
       reason: reason.trim() || undefined,
       isActive: true,
+      category: form.get("category"),
     };
 
     const res = await fetch("/api/admin/instruments", {
@@ -37,7 +38,7 @@ export default function NewInstrumentPage() {
       return;
     }
     toast.success("Instrumento criado com sucesso!");
-    router.push("/admin/dashboard");
+    router.push("/");
     router.refresh();
   }
 
@@ -57,7 +58,7 @@ export default function NewInstrumentPage() {
             name="name"
             required
             maxLength={100}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -69,7 +70,18 @@ export default function NewInstrumentPage() {
             name="group"
             required
             maxLength={100}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-gray-700">
+            Categoria
+          </label>
+          <input
+            name="category"
+            required
+            maxLength={100}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -81,7 +93,7 @@ export default function NewInstrumentPage() {
             name="location"
             required
             maxLength={100}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -93,7 +105,7 @@ export default function NewInstrumentPage() {
             name="currentStatus"
             value={currentStatus}
             onChange={(e) => setCurrentStatus(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="ONLINE">Online</option>
             <option value="OFFLINE">Offline</option>
@@ -113,7 +125,7 @@ export default function NewInstrumentPage() {
               rows={3}
               required
               placeholder="Descreva o motivo"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
         )}

@@ -9,6 +9,13 @@ import {
 import { findRecentEventsByInstrumentId } from "@/server/repositories/status-event-repository";
 import { prisma } from "@/lib/prisma";
 // ── Public ────────────────────────────────────────────────────────────────────
+export async function getInstrumentsStation() {
+  const instruments = await prisma.instrument.findMany({
+    where: { group: "Estação meteorológica" },
+    include: { lastUpdatedBy: { select: { id: true, name: true } } },
+  });
+  return instruments;
+}
 
 export async function getPublicInstruments() {
   return findActiveInstruments();
@@ -52,6 +59,7 @@ export async function createInstrumentAdmin(
     currentStatus?: "ONLINE" | "OFFLINE" | "UNSTABLE" | "MAINTENANCE";
     reason?: string;
     isActive?: boolean;
+    category: string;
   },
   userId: string,
 ) {
@@ -67,6 +75,7 @@ export async function createInstrumentAdmin(
         currentStatus: data.currentStatus ?? "ONLINE",
         isActive: data.isActive ?? true,
         lastUpdatedByUserId: userId,
+        category: data.category,
       },
     });
 
@@ -95,6 +104,7 @@ export async function updateInstrumentAdmin(
     group?: string;
     location?: string;
     isActive?: boolean;
+    category?: string;
   },
 ) {
   const instrument = await findInstrumentByIdAdmin(id);
